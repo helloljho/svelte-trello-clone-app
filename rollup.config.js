@@ -8,6 +8,8 @@ import { terser } from "rollup-plugin-terser";
 import css from "rollup-plugin-css-only";
 import replace from "@rollup/plugin-replace";
 import dotenv from "dotenv";
+import globals from "rollup-plugin-node-globals";
+import builtins from "rollup-plugin-node-builtins";
 import sveltePreprocess from "svelte-preprocess";
 
 dotenv.config();
@@ -60,6 +62,9 @@ export default {
     }),
     replace({
       OMDB_API_KEY: JSON.stringify(process.env.OMDB_API_KEY),
+      values: {
+        "crypto.randomBytes": 'require("randombytes")',
+      },
     }),
     css({ output: "bundle.css" }),
 
@@ -68,7 +73,8 @@ export default {
       dedupe: ["svelte"],
     }),
     commonjs(),
-
+    globals(),
+    builtins(),
     alias({
       entries: [
         {
