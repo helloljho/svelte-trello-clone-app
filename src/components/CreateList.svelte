@@ -1,6 +1,7 @@
 <script>
   import { lists } from "~/store/list";
   import { tick } from "svelte";
+  import { autoFocusout } from "~/actions/autoFocusout";
 
   let isEditMode = false;
   let title = "";
@@ -29,7 +30,7 @@
 
 <div class="create-list">
   {#if isEditMode}
-    <div class="edit-mode">
+    <div use:autoFocusout={offEditeMode} class="edit-mode">
       <textarea
         bind:value={title}
         bind:this={textareaEl}
