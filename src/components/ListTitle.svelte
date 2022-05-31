@@ -57,7 +57,7 @@
   </div>
 {:else}
   <h2 class="title">
-    {title}
+    {list.title}
     <div class="btn small edit-btn-for-list" on:click={onEditMode}>Edit</div>
   </h2>
 {/if}
