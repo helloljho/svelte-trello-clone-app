@@ -41,7 +41,7 @@
         placeholder="Enter a title for this list ..."
       />
       <div class="actions">
-        <div on:click={addList} class="btn">Add List</div>
+        <div on:click={addList} class="btn success">Add List</div>
         <div on:click={offEditeMode} class="btn">Cancel</div>
       </div>
     </div>
