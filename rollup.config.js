@@ -1,11 +1,14 @@
-import svelte from "rollup-plugin-svelte";
+import path from "path";
 import commonjs from "@rollup/plugin-commonjs";
 import resolve from "@rollup/plugin-node-resolve";
+import alias from "@rollup/plugin-alias";
+import svelte from "rollup-plugin-svelte";
 import livereload from "rollup-plugin-livereload";
 import { terser } from "rollup-plugin-terser";
 import css from "rollup-plugin-css-only";
 import replace from "@rollup/plugin-replace";
 import dotenv from "dotenv";
+import sveltePreprocess from "svelte-preprocess";
 
 dotenv.config();
 
@@ -45,40 +48,38 @@ export default {
     file: "public/build/bundle.js",
   },
   plugins: [
+    svelte({
+      compilerOptions: {
+        dev: !production,
+      },
+      preprocess: sveltePreprocess({
+        postcss: {
+          plugins: [require("autoprefixer")()],
+        },
+      }),
+    }),
     replace({
       OMDB_API_KEY: JSON.stringify(process.env.OMDB_API_KEY),
     }),
-    svelte({
-      compilerOptions: {
-        // enable run-time checks when not in production
-        dev: !production,
-      },
-    }),
-    // we'll extract any component CSS out into
-    // a separate file - better for performance
     css({ output: "bundle.css" }),
 
-    // If you have external dependencies installed from
-    // npm, you'll most likely need these plugins. In
-    // some cases you'll need additional configuration -
-    // consult the documentation for details:
-    // https://github.com/rollup/plugins/tree/master/packages/commonjs
     resolve({
       browser: true,
       dedupe: ["svelte"],
     }),
     commonjs(),
 
-    // In dev mode, call `npm run start` once
-    // the bundle has been generated
+    alias({
+      entries: [
+        {
+          find: "~",
+          replacement: path.resolve(__dirname, "src/"),
+        },
+      ],
+    }),
+
     !production && serve(),
-
-    // Watch the `public` directory and refresh the
-    // browser on changes when not in production
     !production && livereload("public"),
-
-    // If we're building for production (npm run build
-    // instead of npm run dev), minify
     production && terser(),
   ],
   watch: {
