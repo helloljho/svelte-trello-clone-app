@@ -27,7 +27,7 @@
       forceFallback: true, // 다양한 환경의 일관된 Drag&Drop(DnD)을 위해 HTML5 기본 DnD 동작을 무시하고 내장 기능을 사용합니다.
       // 요소의 DnD가 종료되면 실행할 핸들러(함수)를 지정합니다.
       onEnd(event) {
-        // console.log(event); // event 객체의 정렬에 대한 다양한 정보가 들어있어요.
+        console.log(event); // event 객체의 정렬에 대한 다양한 정보가 들어있어요.
         cards.reorder({
           fromListId: event.from.dataset.listId,
           toListId: event.to.dataset.listId,
@@ -56,6 +56,7 @@
 
 <style lang="scss">
   .list {
+    word-break: break-all;
     display: inline-block;
     font-size: 16px;
     white-space: normal;

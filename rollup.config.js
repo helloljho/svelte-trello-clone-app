@@ -2,6 +2,7 @@ import path from "path";
 import commonjs from "@rollup/plugin-commonjs";
 import resolve from "@rollup/plugin-node-resolve";
 import alias from "@rollup/plugin-alias";
+import strip from "@rollup/plugin-strip";
 import svelte from "rollup-plugin-svelte";
 import livereload from "rollup-plugin-livereload";
 import { terser } from "rollup-plugin-terser";
@@ -89,6 +90,8 @@ export default {
 
     !production && serve(),
     !production && livereload("public"),
+
+    production && strip({ include: "**/*.(svelte|js)" }),
     production && terser(),
   ],
   watch: {
