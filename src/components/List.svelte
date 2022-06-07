@@ -30,6 +30,7 @@
     height: 100%;
     box-sizing: border-box;
     margin: 0 4px;
+    line-height: 20px;
     :global(&.sortable-ghost) {
       position: relative;
       opacity: 0.2;
