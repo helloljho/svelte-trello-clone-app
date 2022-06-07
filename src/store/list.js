@@ -2,6 +2,7 @@ import { writable } from "svelte/store";
 import cryptoRandomString from "crypto-random-string";
 import _find from "lodash/find";
 import _remove from "lodash/remove";
+import cloneDeep from "lodash/cloneDeep";
 
 const crypto = () => cryptoRandomString({ length: 10 });
 const repoLists = JSON.parse(window.localStorage.getItem("lists")) || [];
@@ -40,6 +41,15 @@ export const lists = {
     const { listId } = paylod;
     _lists.update(($lists) => {
       _remove($lists, { id: listId });
+      return $lists;
+    });
+  },
+  reorder: (payload) => {
+    const { oldIndex, newIndex } = payload;
+    _lists.update(($lists) => {
+      const clone = cloneDeep($lists[oldIndex]);
+      $lists.splice(oldIndex, 1);
+      $lists.splice(newIndex, 0, clone);
       return $lists;
     });
   },
