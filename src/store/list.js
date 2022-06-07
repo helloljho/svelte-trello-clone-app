@@ -2,7 +2,7 @@ import { writable } from "svelte/store";
 import cryptoRandomString from "crypto-random-string";
 import _find from "lodash/find";
 import _remove from "lodash/remove";
-import cloneDeep from "lodash/cloneDeep";
+import _cloneDeep from "lodash/cloneDeep";
 
 const crypto = () => cryptoRandomString({ length: 10 });
 const repoLists = JSON.parse(window.localStorage.getItem("lists")) || [];
@@ -47,7 +47,7 @@ export const lists = {
   reorder: (payload) => {
     const { oldIndex, newIndex } = payload;
     _lists.update(($lists) => {
-      const clone = cloneDeep($lists[oldIndex]);
+      const clone = _cloneDeep($lists[oldIndex]);
       $lists.splice(oldIndex, 1);
       $lists.splice(newIndex, 0, clone);
       return $lists;
@@ -78,6 +78,20 @@ export const cards = {
     _lists.update(($lists) => {
       const foundList = _find($lists, { id: listId });
       _remove(foundList.cards, { id: cardId });
+      return $lists;
+    });
+  },
+  reorder(payload) {
+    const { fromListId, toListId, oldIndex, newIndex } = payload;
+    _lists.update(($lists) => {
+      const fromList = _find($lists, { id: fromListId });
+      const toList =
+        fromListId === toListId ? fromList : _find($lists, { id: toListId });
+
+      const clone = _cloneDeep(fromList.cards[oldIndex]);
+      fromList.cards.splice(oldIndex, 1);
+      toList.cards.splice(newIndex, 0, clone);
+
       return $lists;
     });
   },
