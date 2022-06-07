@@ -1,21 +1,40 @@
 <script>
   import { tick } from "svelte";
   import { autoFocusout } from "~/actions/autoFocusout";
+  import { cards } from "~/store/list";
 
   export let card;
-
+  export let listId;
   let isEditeMode = false;
   let title = "";
   let textareaEl;
 
-  function saveCard() {}
-  function removeCard() {}
+  function saveCard() {
+    if (title.trim()) {
+      cards.edit({
+        listId,
+        cardId: card.id,
+        title,
+      });
+    }
+    offEditeMode();
+  }
+
+  function removeCard() {
+    cards.remove({
+      listId,
+      cardId: card.id,
+    });
+    offEditeMode();
+  }
+
   async function onEditeMode() {
     isEditeMode = true;
     title = card.title;
     await tick();
     textareaEl && textareaEl.focus();
   }
+
   function offEditeMode() {
     isEditeMode = false;
   }
