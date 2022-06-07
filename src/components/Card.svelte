@@ -73,6 +73,23 @@
     &:last-child {
       margin-bottom: 1px;
     }
+    :global(&.sortable-ghost) {
+      opacity: 0.1;
+      position: relative;
+      &::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border-radius: 4px;
+        background: #000;
+      }
+    }
+    :global(&.sortable-chosen) {
+      cursor: move;
+    }
     .title {
       background: #fff;
       padding: 6px 8px;
