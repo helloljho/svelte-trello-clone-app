@@ -41,7 +41,6 @@
   .list-container {
     width: 100vw;
     height: calc(100vh - 40px);
-    border: 10px solid red;
     padding: 30px;
     box-sizing: border-box;
     overflow-x: auto;
@@ -51,8 +50,6 @@
     .lists {
       display: inline-block;
       height: 100%;
-      border: 10px solid blue;
-      box-sizing: border-box;
       white-space: nowrap;
       font-size: 0;
     }
